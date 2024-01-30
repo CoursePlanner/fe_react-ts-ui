@@ -1,0 +1,10 @@
+{
+  "presets": [
+    "@babel/react",
+    "@babel/typescript",
+    ["@babel/env", { "modules": false }]
+  ],
+  // Resolves issue where declaring constructor args using TypeScript fails to work
+  // Ex: constructor(public someVal: string) {}
+  "plugins": ["@babel/plugin-transform-typescript"]
+}
