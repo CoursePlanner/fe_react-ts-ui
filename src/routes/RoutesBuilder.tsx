@@ -7,7 +7,7 @@ import {
   Navigate,
 } from 'react-router-dom'
 
-interface Page {
+export interface Page {
   path: string
   componentName: string
   viewOnHeader: boolean
@@ -20,6 +20,12 @@ export const routes: Page[] = [
     componentName: 'Home',
     viewOnHeader: true,
     requireLogin: false,
+  },
+  {
+    path: '/account',
+    componentName: 'MyAccount',
+    viewOnHeader: true,
+    requireLogin: true,
   },
 ]
 

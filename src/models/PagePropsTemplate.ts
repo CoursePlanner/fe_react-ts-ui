@@ -4,5 +4,5 @@ export interface PagePropsTemplate {
   location?: Location<any>
   navigate?: NavigateFunction
   path?: string
-  setPageTitle(title: string): void
+  setPageTitle?(title: string): void
 }

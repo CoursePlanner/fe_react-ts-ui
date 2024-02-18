@@ -23,7 +23,6 @@ class LoginViewCore extends React.Component<PropStates> {
     })
   }
   render(): ReactNode {
-    console.log('**** this.props: ', this.props)
     return (
       <div>
         <span>{this.props.userLoginReducer.errorMessage}</span>

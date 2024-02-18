@@ -15,7 +15,7 @@ export const App = (): ReactNode => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <Header />
+      <Header navigate={navigate} location={location} />
       <Routes>{routesList(navigate, location, setPageTitle)}</Routes>
     </HelmetProvider>
   )

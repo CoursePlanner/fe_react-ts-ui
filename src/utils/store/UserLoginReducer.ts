@@ -26,14 +26,15 @@ const setAuthCookies = (
   Cookies.set(AuthConstants.HEADER_USER_ID, userId, { expires: tokenExpiry })
 }
 
-export interface LoginState extends LoginCredentials {
-  isLoading: boolean
-  errorMessage: string
+interface LoginResponse {
+  status?: string
+  tokenExpiry?: number
 }
 
-interface LoginResponse {
-  status: string
-  tokenExpiry: number
+export interface LoginState extends LoginCredentials, LoginResponse {
+  isLoading?: boolean
+  errorMessage?: string
+  isLoggedIn?: boolean
 }
 
 export const userLoginSlice = createSlice({
@@ -43,6 +44,7 @@ export const userLoginSlice = createSlice({
     password: '',
     errorMessage: '',
     isLoading: false,
+    isLoggedIn: false,
   } as LoginState,
   reducers: {
     clearLoginDetails: (state) => {
@@ -50,6 +52,12 @@ export const userLoginSlice = createSlice({
       state.password = ''
       state.errorMessage = ''
       state.isLoading = false
+    },
+    setUsername: (state, action) => {
+      state.username = action.payload
+    },
+    setPassword: (state, action) => {
+      state.password = action.payload
     },
   },
   extraReducers(builder) {
@@ -75,8 +83,8 @@ export const userLoginSlice = createSlice({
 
 export const performLogin = createAsyncThunk(
   'auth/login',
-  async (credentials: LoginCredentials): Promise<string> => {
-    let responseData = ''
+  async (credentials: LoginCredentials): Promise<LoginState> => {
+    let responseData = {} as LoginState
     try {
       const response = await axios.post<string>(
         'http://localhost:9000/api/gws/auth/login',
@@ -88,7 +96,7 @@ export const performLogin = createAsyncThunk(
           },
         },
       )
-      responseData = ((await response.data) as unknown as LoginResponse).status
+      responseData = (await response.data) as unknown as LoginState
       const tokenExpiry: number = getDifferenceInDays(
         new Date(),
         new Date(
@@ -103,19 +111,24 @@ export const performLogin = createAsyncThunk(
         response?.headers[AuthConstants.HEADER_REFRESH_TOKEN],
         tokenExpiry,
       )
+      responseData.isLoggedIn = true
+      responseData.password = ''
+      responseData.username = ''
     } catch (error) {
       const errorResponseObj = (await error?.response
         ?.data) as unknown as APIErrorResponse
-      responseData =
+      responseData.errorMessage =
         errorResponseObj?.errorMessage ||
         errorResponseObj?.status ||
         'Something went wrong!'
       //return (error?.response?.data as string) || 'Something went wrong!'
+      responseData.isLoggedIn = false
     }
     return responseData
   },
 )
 
-export const { clearLoginDetails } = userLoginSlice.actions
+export const { clearLoginDetails, setUsername, setPassword } =
+  userLoginSlice.actions
 
 export default userLoginSlice.reducer
