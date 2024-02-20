@@ -13,9 +13,9 @@ export const App = (): ReactNode => {
   return (
     <HelmetProvider>
       <Helmet>
-        <title>{pageTitle}</title>
+        <title>{`CP | ${pageTitle}`}</title>
       </Helmet>
-      <Header navigate={navigate} location={location} />
+      <Header navigate={navigate} setPageTitle={setPageTitle} location={location} />
       <Routes>{routesList(navigate, location, setPageTitle)}</Routes>
     </HelmetProvider>
   )

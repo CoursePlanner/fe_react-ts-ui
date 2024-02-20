@@ -5,11 +5,13 @@ import {
   RouteObject,
   NavigateFunction,
   Navigate,
+  Location,
 } from 'react-router-dom'
 
 export interface Page {
   path: string
   componentName: string
+  displayName: string
   viewOnHeader: boolean
   requireLogin: boolean
 }
@@ -18,14 +20,23 @@ export const routes: Page[] = [
   {
     path: '/',
     componentName: 'Home',
+    displayName: 'Home',
     viewOnHeader: true,
     requireLogin: false,
   },
   {
     path: '/account',
     componentName: 'MyAccount',
+    displayName: 'My Account',
     viewOnHeader: true,
     requireLogin: true,
+  },
+  {
+    path: '*',
+    componentName: 'NotFound',
+    displayName: 'Lost In Space',
+    viewOnHeader: false,
+    requireLogin: false,
   },
 ]
 
@@ -48,6 +59,7 @@ const buildRouteObjects = (
           navigate={navigate}
           location={location}
           path={data.path}
+          title={data.displayName}
           setPageTitle={setPageTitle}
         />
       }
@@ -57,7 +69,7 @@ const buildRouteObjects = (
 
 export const routesList = (
   navigate: NavigateFunction,
-  location: Location,
+  location: Location<any>,
   setPageTitle: React.Dispatch<React.SetStateAction<string>>,
 ): React.ReactElement[] => {
   return routes.map((data, index) =>

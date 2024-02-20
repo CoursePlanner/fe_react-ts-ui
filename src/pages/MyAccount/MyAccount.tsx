@@ -10,7 +10,12 @@ import {
   setFullName,
   setPassword,
   updateProfileData,
+  loadProfileData,
 } from '../../utils/store/UserProfileReducer'
+import {
+  PageState,
+  setDataLoadingState,
+} from '../../utils/store/PageStateReducer'
 
 interface MyAccountProps {
   profileDetails: UserProfileProps
@@ -23,57 +28,48 @@ interface MyAccountProps {
   setFullName(fullName: string): void
   setPassword(password: string): void
   updateProfileData(profileDetails: ProfileState): void
+  pageState: PageState
+  setDataLoadingState(pageState: boolean): void
 }
 
 class MyAccountView extends React.Component<MyAccountProps> {
-  componentDidMount = async (): Promise<void> => {
-    const tryLoading =
-      Cookies.get(AuthConstants.HEADER_AUTH_CODE) &&
-      Cookies.get(AuthConstants.HEADER_USER_ID)
-    if (tryLoading && !this.props.profileDetails.userId) {
-      await this?.props?.loadProfileData()
-    }
-  }
-
   render(): ReactNode {
     return (
-      <Form>
+      <Form className="p-2">
         <Form.Group>
           <Form.Label>Full Name</Form.Label>
           <Form.Control
-            contentEditable={false}
+            required
             value={this.props.profileDetails.fullName}
             onChange={(e) => this.props.setFullName(e.target.value)}
           />
         </Form.Group>
         <Form.Group>
           <Form.Label>Username</Form.Label>
-          <Form.Control
-            contentEditable={false}
-            value={this.props.profileDetails.username}
-          />
+          <Form.Control readOnly value={this.props.profileDetails.username} />
         </Form.Group>
         <Form.Group>
           <Form.Label>Password</Form.Label>
           <Form.Control
+            required
             type="password"
-            contentEditable={true}
-            value={this.props.profileDetails.password || '**********'}
+            value={this.props.profileDetails.password || ''}
+            placeholder="Update Password"
             onChange={(e) => this.props.setPassword(e.target.value)}
           />
         </Form.Group>
         <Form.Group>
           <Form.Label>Created On</Form.Label>
-          <Form.Control
-            contentEditable={false}
-            value={this.props.profileDetails.createdOn}
-          />
+          <Form.Control readOnly value={this.props.profileDetails.createdOn} />
         </Form.Group>
         <Form.Group>
           <Button
-            onClick={() =>
-              this.props.updateProfileData(this.props.profileDetails)
-            }
+            className="btn-dark w-100 mt-2"
+            onClick={async () => {
+              this.props.setDataLoadingState(true)
+              await this.props.updateProfileData(this.props.profileDetails)
+              this.props.setDataLoadingState(false)
+            }}
           >
             Update Profile
           </Button>
@@ -86,6 +82,7 @@ class MyAccountView extends React.Component<MyAccountProps> {
 const mapStateToProps = (state: any, props: any) => {
   return {
     profileDetails: state?.userProfileReducer || ({} as UserProfileProps),
+    pageState: state?.pageStateReducer || ({} as PageState),
     ...props,
   } as MyAccountProps
 }
@@ -94,4 +91,6 @@ export const MyAccount = connect(mapStateToProps, {
   setFullName,
   setPassword,
   updateProfileData,
+  loadProfileData,
+  setDataLoadingState,
 })(MyAccountView)

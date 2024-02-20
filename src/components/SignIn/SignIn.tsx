@@ -16,6 +16,7 @@ import {
 } from '../../utils/store/UserLoginReducer'
 import { loadProfileData } from '../../utils/store/UserProfileReducer'
 import { UserProfileProps } from '../../models/UserProfile'
+import { setDataLoadingState } from '../../utils/store/PageStateReducer'
 
 interface SignInViewProps {
   showModal: boolean
@@ -25,6 +26,7 @@ interface SignInViewProps {
   setPassword(password: string): void
   loginDetails: LoginState
   userProfileDetails: UserProfileProps
+  setDataLoadingState(pageState: boolean): void
 }
 
 class SignInView extends React.Component<SignInViewProps> {
@@ -66,12 +68,15 @@ class SignInView extends React.Component<SignInViewProps> {
               />
             </Form.Group>
             <Button
-              onClick={async () =>
+              className="mt-2"
+              onClick={async () => {
+                setDataLoadingState(true)
                 await this.props.performLogin({
                   username: this.props.loginDetails.username,
                   password: this.props.loginDetails.password,
                 })
-              }
+                setDataLoadingState(false)
+              }}
             >
               Sign In
             </Button>
@@ -95,4 +100,5 @@ export const SignIn = connect(mapStateToProps, {
   setPassword,
   performLogin,
   loadProfileData,
+  setDataLoadingState,
 })(SignInView)

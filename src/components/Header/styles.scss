@@ -1,8 +1,35 @@
+.header-root {
+  background-color: #8800ff;
+  color: #ffffff;
+  font-weight: bold;
+}
+  
 @media screen and (max-width: 200px) {
   .header-root {
     .custom-button-class {
       font-size: 12px;
       background-color: rgb(52, 0, 98) !important;
     }
+  }
+}
+
+.common-loader-bar {
+  width: 100%;
+  height: 4px;
+  margin-bottom: 4px;
+  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet, red);
+  background-size: 200% 200%;
+  animation: common-loader-bar-anim 5s linear infinite;
+}
+
+@keyframes common-loader-bar-anim {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }

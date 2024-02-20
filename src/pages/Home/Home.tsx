@@ -1,17 +1,25 @@
 import React, { ReactNode } from 'react'
-import { PagePropsTemplate } from '../../models/PagePropsTemplate'
 import { Button } from 'react-bootstrap'
+import { Location, NavigateFunction } from 'react-router-dom'
 
-export class Home extends React.Component<PagePropsTemplate> {
-  constructor(props: PagePropsTemplate) {
+export interface HomeProps {
+  resetUserProfileData(): void
+  loadProfileData(): string
+  location: Location<any>
+  navigate: NavigateFunction
+  path: string
+  setPageTitle(title: string): void
+  setDataLoadingState(pageState: boolean): void
+}
+
+export class Home extends React.Component<HomeProps> {
+  constructor(props: HomeProps) {
     super(props)
   }
-  componentDidMount(): void {
-    this.props.setPageTitle('Home Page')
-  }
+
   render(): ReactNode {
     return (
-      <div className="home-root">
+      <div className="home-root p-2">
         <Button className="custom-button-class btn-dark">
           Click Me From Home
         </Button>
