@@ -4,6 +4,7 @@ import { Routes } from 'react-router-dom'
 import { routesList } from './routes/RoutesBuilder'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
+import './styles.scss'
 
 export const App = (): ReactNode => {
   const navigate = useNavigate()

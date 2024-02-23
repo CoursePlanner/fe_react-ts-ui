@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react'
 import { Button } from 'react-bootstrap'
 import { Location, NavigateFunction } from 'react-router-dom'
+import './styles.scss'
 
 export interface HomeProps {
   resetUserProfileData(): void

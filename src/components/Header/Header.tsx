@@ -61,13 +61,6 @@ class HeaderView extends React.Component<HeaderProps, HeaderState> {
       Cookies.get(AuthConstants.HEADER_USER_ID)
 
     if (
-      this.props.profileDetails.userId === '' &&
-      this.pageRequiresLogin()
-    ) {
-      this.props.navigate('/')
-    }
-
-    if (
       tryLoading &&
       this.props.profileDetails.userId === '' &&
       this.state.loadProfileAttempts > 0
@@ -95,6 +88,13 @@ class HeaderView extends React.Component<HeaderProps, HeaderState> {
       this.props.navigate('/')
       alert("You've been logged out, please re-login.")
     }
+
+    if (
+      this.props.profileDetails.userId === '' &&
+      this.pageRequiresLogin()
+    ) {
+      this.props.navigate('/')
+    }
   }
 
   pageRequiresLogin = (): boolean => {
@@ -117,7 +117,7 @@ class HeaderView extends React.Component<HeaderProps, HeaderState> {
         <Button
           key={`${data.componentName}_key_${index}`}
           disabled={isCurrentPath}
-          className={`${isCurrentPath ? 'btn-dark' : 'btn-light'} me-2`}
+          className={`${isCurrentPath ? 'btn-light' : 'btn-warning'} me-2`}
           onClick={() => {
             if (!isCurrentPath) {
               this.props.setPageTitle(data.displayName)
@@ -134,7 +134,7 @@ class HeaderView extends React.Component<HeaderProps, HeaderState> {
   renderAccountStatus = (): ReactNode => {
     return this.props.profileDetails.userId === '' ? (
       <Button
-        className="btn-dark"
+        className="btn-light"
         onClick={() => {
           this.setState({ signInActive: true })
         }}
@@ -160,9 +160,9 @@ class HeaderView extends React.Component<HeaderProps, HeaderState> {
   render(): ReactNode {
     return (
       <>
-        {this.props.pageState.isDataLoading && (
-          <div className="common-loader-bar" />
-        )}
+      {this.props.pageState.isDataLoading && (
+        <div className="common-loader-bar" />
+      )}
         <div className="d-flex justify-content-between header-root p-2 mb-2">
           <SignIn
             showModal={this.state.signInActive}
