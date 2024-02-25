@@ -32,6 +32,13 @@ export const routes: Page[] = [
     requireLogin: true,
   },
   {
+    path: '/orders',
+    componentName: 'Orders',
+    displayName: 'My Orders',
+    viewOnHeader: true,
+    requireLogin: true,
+  },
+  {
     path: '*',
     componentName: 'NotFound',
     displayName: 'Lost In Space',

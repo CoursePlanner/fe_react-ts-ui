@@ -68,7 +68,7 @@ class SignInView extends React.Component<SignInViewProps> {
               />
             </Form.Group>
             <Button
-              className="mt-2"
+              className="btn-success w-100 mt-3"
               onClick={async () => {
                 setDataLoadingState(true)
                 await this.props.performLogin({

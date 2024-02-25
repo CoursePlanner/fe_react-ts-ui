@@ -125,7 +125,7 @@ class HeaderView extends React.Component<HeaderProps, HeaderState> {
             }
           }}
         >
-          {data.componentName}
+          {data.displayName}
         </Button>
       )
     )
