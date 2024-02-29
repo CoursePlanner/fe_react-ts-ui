@@ -16,7 +16,7 @@ import {
 } from '../../utils/store/UserLoginReducer'
 import { loadProfileData } from '../../utils/store/UserProfileReducer'
 import { UserProfileProps } from '../../models/UserProfile'
-import { setDataLoadingState } from '../../utils/store/PageStateReducer'
+import { PageState, setDataLoadingState } from '../../utils/store/PageStateReducer'
 
 interface SignInViewProps {
   showModal: boolean
@@ -27,6 +27,7 @@ interface SignInViewProps {
   loginDetails: LoginState
   userProfileDetails: UserProfileProps
   setDataLoadingState(pageState: boolean): void
+  pageState: PageState
 }
 
 class SignInView extends React.Component<SignInViewProps> {
@@ -91,6 +92,7 @@ const mapStateToProps = (state: any, props: any) => {
   return {
     loginDetails: state?.userLoginReducer || {},
     userProfileDetails: state?.userProfileReducer || {},
+    pageState: state.pageStateReducer || {},
     ...props,
   }
 }
